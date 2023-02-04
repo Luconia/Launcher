@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="background-dark.png" />
+    <None Remove="background.png" />
+    <None Remove="close-white.png" />
+    <None Remove="close.png" />
+    <None Remove="luconia-logo-black.png" />
+    <None Remove="minimize-white.png" />
+    <None Remove="minimize.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DiscordRichPresence" Version="1.1.3.18" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\close-white.png" />
+    <Resource Include="Images\background-dark.png" />
+    <Resource Include="Images\background.png" />
+    <Resource Include="Images\close.png" />
+    <Resource Include="Images\luconia-logo-black.png" />
+    <Resource Include="Images\minimize.png" />
+    <Resource Include="Images\minimize-white.png" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,39 @@
+﻿<Window x:Class="Launcher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Launcher"
+        mc:Ignorable="d"
+        Title="Luconia Launcher" 
+        Height="378" 
+        Width="605" 
+        Background="{x:Null}" 
+        ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="None"
+        AllowsTransparency="True">
+    <Border CornerRadius="50,50,50,50" MouseDown="Drag">
+        <Border.Background>
+            <ImageBrush Stretch="Fill" ImageSource="Images/background-dark.png"></ImageBrush>
+        </Border.Background>
+        <Grid>
+            <Button Style="{DynamicResource Round}" Content="Launch" Margin="194,160,193,160" BorderBrush="{x:Null}" Background="Black" Click="Button_Click" FontFamily="Resources/Fonts/Inter-Regular.ttf #Inter Regular" FontSize="16" Foreground="White">
+                <Button.Effect>
+                    <DropShadowEffect BlurRadius="70" Opacity="0.3" Direction="-90"/>
+                </Button.Effect>
+            </Button>
+            <Label Content="Luconia" HorizontalAlignment="Center" Margin="0,68,0,0" VerticalAlignment="Top" FontSize="48" FontFamily="Resources/Fonts/Inter-Regular.ttf #Inter Regular" Height="68" Foreground="White">
+                <Label.Effect>
+                    <DropShadowEffect BlurRadius="5" Direction="-90" Opacity="0.3"/>
+                </Label.Effect>
+            </Label>
+            <Button Style="{DynamicResource ImageButton}" Name="btn6" Click="MinimizeLauncher" Margin="509,21,66,328" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="Images/minimize-white.png"/>
+            </Button>
+            <Button Style="{DynamicResource ImageButton}" Name="btn5" Click="CloseLauncher" Margin="544,21,31,328" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="Images/close-white.png"/>
+            </Button>
+        </Grid>
+    </Border>
+</Window>
