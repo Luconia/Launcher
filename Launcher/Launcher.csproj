@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Resources\luconia-logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +21,10 @@
     <None Remove="luconia-logo-black.png" />
     <None Remove="minimize-white.png" />
     <None Remove="minimize.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\luconia-logo.ico" />
   </ItemGroup>
 
   <ItemGroup>

@@ -57,16 +57,6 @@ namespace Launcher
         private async void InitVersion()
         {
             var existsFile = File.Exists(roamingDirectory + "\\Luconia\\version.txt");
-            var existsDirectory = Directory.Exists(roamingDirectory + "\\Luconia");
-
-            if (!existsDirectory)
-            {
-                Logger.LogWarning("Can't find Luconia directory");
-                Logger.LogInfo("Creating Directory...");
-
-                Directory.CreateDirectory(roamingDirectory + "\\Luconia");
-                Logger.LogInfo("Directory created");
-            }
 
             if (!Utils.CheckNet())
             {
