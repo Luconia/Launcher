@@ -35,7 +35,7 @@ namespace Launcher
             {
                 Logger.LogWarning("Can't find version file");
                 Logger.LogInfo("Creating File...");
-                File.Create(roamingDirectory + "\\Luconia\\version.json");
+                File.Create(roamingDirectory + "\\Luconia\\version.json").Close();
                 Logger.LogInfo("File created");
             }
         }

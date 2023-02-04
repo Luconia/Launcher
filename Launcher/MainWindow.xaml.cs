@@ -2,6 +2,7 @@
 using DiscordRPC.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -46,9 +47,28 @@ namespace Launcher
             if (e.ChangedButton == MouseButton.Left) DragMove();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Launch(object sender, RoutedEventArgs e)
         {
+            string roamingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
+            if (Process.GetProcessesByName("Minecraft.Windows").Length == 0)
+            {
+                Process p = new Process();
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.UseShellExecute = true;
+                startInfo.FileName = startInfo.FileName = @"shell:appsFolder\Microsoft.MinecraftUWP_8wekyb3d8bbwe!App";
+                p.StartInfo = startInfo;
+                p.Start();
+            }
+
+            if (Process.GetProcessesByName("Minecraft.Windows").Length != 0)
+            {
+                Logger.LogError("Can't find Minecraft process");
+                return;
+            }
+
+            // TODO: downloader
+            Injector.Inject($@"{roamingDirectory}\Luconia\luconia.dll");
         }
 
         private void CloseLauncher(object sender, RoutedEventArgs e)
