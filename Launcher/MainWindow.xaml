@@ -18,7 +18,7 @@
             <ImageBrush Stretch="Fill" ImageSource="Images/background-dark.png"></ImageBrush>
         </Border.Background>
         <Grid>
-            <Button Style="{DynamicResource Round}" Content="Launch" Margin="194,160,193,160" BorderBrush="{x:Null}" Background="Black" Click="Button_Click" FontFamily="Resources/Fonts/Inter-Regular.ttf #Inter Regular" FontSize="16" Foreground="White">
+            <Button Style="{DynamicResource Round}" Content="Launch" Margin="194,160,193,160" BorderBrush="{x:Null}" Background="#FF151515" Click="Button_Click" FontFamily="Resources/Fonts/Inter-Regular.ttf #Inter Regular" FontSize="16" Foreground="White">
                 <Button.Effect>
                     <DropShadowEffect BlurRadius="70" Opacity="0.3" Direction="-90"/>
                 </Button.Effect>

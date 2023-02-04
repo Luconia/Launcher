@@ -2,7 +2,9 @@
 using DiscordRPC.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,9 +21,24 @@ namespace Launcher
 {
     public partial class MainWindow : Window
     {
+        [DllImport("Kernel32")]
+        public static extern void AllocConsole();
+
+        [DllImport("Kernel32")]
+        public static extern void FreeConsole();
+
+        Installer installer;
+
         public MainWindow()
         {
             InitializeComponent();
+            AllocConsole();
+
+            Console.Title = "Luconia Launcher";
+
+            installer = new Installer();
+
+            Logger.LogInfo("Started Luconia Launcher");
         }
 
         private void Drag(object sender, MouseButtonEventArgs e)
@@ -43,5 +60,7 @@ namespace Launcher
         {
             WindowState = WindowState.Minimized;
         }
+
+        
     }
 }
