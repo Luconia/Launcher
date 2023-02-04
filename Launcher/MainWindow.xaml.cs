@@ -1,9 +1,11 @@
 ﻿using DiscordRPC;
 using DiscordRPC.Logging;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -34,12 +36,22 @@ namespace Launcher
 
         bool isInjected = false;
 
+        string roamingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
         public MainWindow()
         {
             InitializeComponent();
-            AllocConsole();
 
-            Console.Title = "Luconia Launcher";
+            if (!File.Exists(roamingDirectory + "\\Luconia\\type.txt"))
+            {
+                File.Create(roamingDirectory + "\\Luconia\\type.txt").Close();
+                File.WriteAllText(roamingDirectory + "\\Luconia\\type.txt", "normal\n// set to debug if you want to see the console");
+            }
+
+            if (File.ReadLines(roamingDirectory + "\\Luconia\\type.txt").First() == "debug")
+            {
+                AllocConsole();
+            }
 
             if (!Utils.CheckNet())
             {
@@ -72,9 +84,6 @@ namespace Launcher
         // some things are from https://github.com/Plextora/LatiteInjector/blob/master/MainWindow.xaml.cs
         private async void Launch(object sender, RoutedEventArgs e)
         {
-            if (isInjected) return;
-            string roamingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
             Installer.Download();
 
             if (Process.GetProcessesByName("Minecaft.Windows").Length != 0) return;
@@ -108,7 +117,73 @@ namespace Launcher
             });
 
             Injector.Inject($@"{roamingDirectory}\Luconia\luconia.dll");
-            isInjected = true;
+        }
+
+        private async void LaunchCustomDll(object sender, RoutedEventArgs e)
+        {
+            string roamingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            Installer.Download();
+
+            Logger.LogInfo("User is selecting a custom DLL...");
+
+            OpenFileDialog openFileDialog = new()
+            {
+                Filter = "DLL files (*.dll)|*.dll|All files (*.*)|*.*",
+                RestoreDirectory = true
+            };
+
+            if (openFileDialog.ShowDialog() != true) return;
+
+            if (Process.GetProcessesByName("Minecaft.Windows").Length != 0) return;
+
+            Process p = new Process();
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.UseShellExecute = true;
+            startInfo.FileName = startInfo.FileName = @"shell:appsFolder\Microsoft.MinecraftUWP_8wekyb3d8bbwe!App";
+            p.StartInfo = startInfo;
+            p.Start();
+
+            while (true)
+            {
+                if (Process.GetProcessesByName("Minecraft.Windows").Length == 0) continue;
+                Minecraft = Process.GetProcessesByName("Minecraft.Windows")[0];
+                break;
+            }
+
+            await Task.Run(() =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Logger.LogInfo("Waiting for Minecraft to load...");
+                });
+                while (true)
+                {
+                    Minecraft?.Refresh();
+                    if (Minecraft is { Modules.Count: > 160 }) break;
+                    Thread.Sleep(4000);
+                }
+            });
+
+            Injector.Inject(openFileDialog.FileName);
+        }
+
+        private void GithubOnClick(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/Luconia/Launcher",
+                UseShellExecute = true
+            });
+        }
+
+        private void DiscordOnClick(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://discord.gg/luconia",
+                UseShellExecute = true
+            });
         }
     }
 }

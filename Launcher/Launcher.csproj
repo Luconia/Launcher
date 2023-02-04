@@ -13,6 +13,10 @@
     <None Remove="background.png" />
     <None Remove="close-white.png" />
     <None Remove="close.png" />
+    <None Remove="discord-black.png" />
+    <None Remove="discord-white.png" />
+    <None Remove="github-black.png" />
+    <None Remove="github-white.png" />
     <None Remove="luconia-logo-black.png" />
     <None Remove="minimize-white.png" />
     <None Remove="minimize.png" />
@@ -23,6 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\discord-black.png" />
+    <Resource Include="Images\discord-white.png" />
+    <Resource Include="Images\github-black.png" />
+    <Resource Include="Images\github-white.png" />
     <Resource Include="Images\close-white.png" />
     <Resource Include="Images\background-dark.png" />
     <Resource Include="Images\background.png" />
