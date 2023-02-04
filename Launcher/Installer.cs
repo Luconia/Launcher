@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Windows;
 using System.Net;
 using System.Windows.Controls;
+using DiscordRPC;
 
 namespace Launcher
 {
@@ -20,6 +21,37 @@ namespace Launcher
         {
             Logger.LogInfo("Initializing Installer");
             InitVersion();
+            InitDiscordRichPresence();
+        }
+
+        private void InitDiscordRichPresence()
+        {
+            DiscordRpcClient client = new DiscordRpcClient("1066805525540507728");
+
+            client.OnReady += (sender, e) =>
+            {
+                Logger.LogInfo("Received Ready from user {0}", e.User.Username);
+            };
+
+            client.Initialize();
+
+            client.SetPresence(new RichPresence()
+            {
+                Details = $"Luconia v{version}",
+                //State = "In the Launcher",
+                Assets = new Assets()
+                {
+                    LargeImageKey = "icon",
+                    LargeImageText = $"v{version}",
+                },
+                Buttons = new DiscordRPC.Button[]
+                {
+                    new DiscordRPC.Button()
+                    {
+                        Label = "Join the Discord", Url = "https://discord.gg/luconia"
+                    }
+                }
+            });
         }
 
         private async void InitVersion()
