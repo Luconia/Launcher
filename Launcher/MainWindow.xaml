@@ -36,10 +36,10 @@
             </Button>
             
             <Button Style="{DynamicResource ImageButton}" HorizontalAlignment="Left" Width="40" Height="40" Margin="33,310,0,0" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Click="GithubOnClick">
-                <Image Source="/github-white.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                <Image Source="Images/github-white.png" RenderOptions.BitmapScalingMode="HighQuality"/>
             </Button>
             <Button Style="{DynamicResource ImageButton}" HorizontalAlignment="Left" Width="40" Height="40" Margin="90,310,0,0" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Click="DiscordOnClick">
-                <Image Source="/discord-white.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                <Image Source="Images/discord-white.png" RenderOptions.BitmapScalingMode="HighQuality"/>
             </Button>
         </Grid>
     </Border>
