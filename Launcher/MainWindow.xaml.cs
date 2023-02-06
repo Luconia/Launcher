@@ -180,20 +180,28 @@ namespace Launcher
 
         private void GithubOnClick(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(new ProcessStartInfo
+            Process.Start(new ProcessStartInfo
             {
                 FileName = "https://github.com/Luconia/Launcher",
                 UseShellExecute = true
             });
         }
-
         private void DiscordOnClick(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(new ProcessStartInfo
+            if (Process.GetProcessesByName("Discord").Length > 0)
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "discord://-/invite/luconia",
+                    UseShellExecute = true
+                });
+            else
             {
-                FileName = "https://discord.gg/luconia",
-                UseShellExecute = true
-            });
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "https://discord.gg/luconia",
+                    UseShellExecute = true
+                });
+            }
         } 
     }
 }
