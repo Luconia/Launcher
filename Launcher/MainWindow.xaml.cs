@@ -202,6 +202,24 @@ namespace Launcher
                     UseShellExecute = true
                 });
             }
-        } 
+        }
+
+        private void CustomizeWallpaperButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new()
+            {
+                Filter = "Images (*.png,*.jpg,*.jpeg)|*.png;*.jpg;*.jpeg|All files (*.*)|*.*",
+                RestoreDirectory = true
+            };
+
+            if (openFileDialog.ShowDialog() != true) return;
+
+            var customBackground = new BitmapImage();
+            customBackground.BeginInit();
+            customBackground.UriSource = new Uri(openFileDialog.FileName, UriKind.Relative);
+            customBackground.EndInit();
+
+            LauncherBackground.ImageSource = customBackground;
+        }
     }
 }
