@@ -252,12 +252,32 @@ namespace Launcher
             if (!Directory.Exists($@"{roamingDirectory}\Luconia\img"))
                 Directory.CreateDirectory($@"{roamingDirectory}\Luconia\img");
 
-            using FileStream stream = new FileStream($@"{roamingDirectory}\Luconia\img\bg.jpg", FileMode.OpenOrCreate);
-            BitmapFrame frame = BitmapFrame.Create((BitmapSource)LauncherBackground.ImageSource);
+            if (!IsFileLocked(new FileInfo($@"{roamingDirectory}\Luconia\img\bg.jpg")))
+            {
+                using FileStream stream = new FileStream($@"{roamingDirectory}\Luconia\img\bg.jpg", FileMode.OpenOrCreate);
+                BitmapFrame frame = BitmapFrame.Create((BitmapSource)LauncherBackground.ImageSource);
 
-            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
-            encoder.Frames.Add(frame);
-            encoder.Save(stream);
+                JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+                encoder.Frames.Add(frame);
+                encoder.Save(stream);
+            }
+            else if (IsFileLocked(new FileInfo($@"{roamingDirectory}\Luconia\img\bg.jpg")))
+                Logger.LogError($@"{roamingDirectory}\Luconia\img\bg.jpg is in use, so the launcher could not change the background!");
+        }
+        
+        protected virtual bool IsFileLocked(FileInfo file)
+        {
+            try
+            {
+                using FileStream stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None);
+                stream.Close();
+            }
+            catch (IOException)
+            {
+                return true;
+            }
+            
+            return false;
         }
     }
 }
