@@ -21,6 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using Path = System.IO.Path;
 
 namespace Launcher
 {
@@ -74,6 +75,26 @@ namespace Launcher
             installer = new Installer();
 
             Logger.LogInfo("Started Luconia Launcher");
+            
+            if (Directory.Exists($@"{roamingDirectory}\Luconia\img"))
+                Directory.CreateDirectory($@"{roamingDirectory}\Luconia\img");
+            
+            using FileStream stream = new FileStream($"{Path.GetTempPath()}\\luconiaBG.jpg", FileMode.OpenOrCreate);
+            BitmapFrame frame = BitmapFrame.Create((BitmapSource)LauncherBackground.ImageSource);
+
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(frame);
+            encoder.Save(stream);
+
+            if (File.Exists($@"{roamingDirectory}\Luconia\img\bg.jpg"))
+            {
+                var customBackground = new BitmapImage();
+                customBackground.BeginInit();
+                customBackground.UriSource = new Uri($@"{roamingDirectory}\Luconia\img\bg.jpg", UriKind.Relative);
+                customBackground.EndInit();
+
+                LauncherBackground.ImageSource = customBackground;
+            }
         }
 
         private void Drag(object sender, MouseButtonEventArgs e)
@@ -206,6 +227,13 @@ namespace Launcher
 
         private void CustomizeWallpaperButtonOnClick(object sender, RoutedEventArgs e)
         {
+            var originalWallpaper = new BitmapImage();
+            originalWallpaper.BeginInit();
+            originalWallpaper.UriSource = new Uri($"{Path.GetTempPath()}\\luconiaBG.jpg", UriKind.Relative);
+            originalWallpaper.EndInit();
+
+            LauncherBackground.ImageSource = originalWallpaper;
+            
             OpenFileDialog openFileDialog = new()
             {
                 Filter = "Images (*.png,*.jpg,*.jpeg)|*.png;*.jpg;*.jpeg|All files (*.*)|*.*",
@@ -220,6 +248,16 @@ namespace Launcher
             customBackground.EndInit();
 
             LauncherBackground.ImageSource = customBackground;
+
+            if (!Directory.Exists($@"{roamingDirectory}\Luconia\img"))
+                Directory.CreateDirectory($@"{roamingDirectory}\Luconia\img");
+
+            using FileStream stream = new FileStream($@"{roamingDirectory}\Luconia\img\bg.jpg", FileMode.OpenOrCreate);
+            BitmapFrame frame = BitmapFrame.Create((BitmapSource)LauncherBackground.ImageSource);
+
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(frame);
+            encoder.Save(stream);
         }
     }
 }
