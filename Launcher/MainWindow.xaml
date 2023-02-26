@@ -34,7 +34,7 @@
             <Button Style="{DynamicResource ImageButton}" Name="btn5" Click="CloseLauncher" Margin="544,21,31,328" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="Images/close-white.png"/>
             </Button>
-            
+
             <Button Style="{DynamicResource ImageButton}" HorizontalAlignment="Left" Width="40" Height="40" Margin="33,310,0,0" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Click="GithubOnClick">
                 <Image Source="Images/github-white.png" RenderOptions.BitmapScalingMode="HighQuality"/>
             </Button>

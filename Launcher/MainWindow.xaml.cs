@@ -43,26 +43,6 @@ namespace Launcher
         {
             InitializeComponent();
 
-            if (!Directory.Exists(roamingDirectory + "\\Luconia"))
-            {
-                Logger.LogWarning("Can't find Luconia directory");
-                Logger.LogInfo("Creating Directory...");
-
-                Directory.CreateDirectory(roamingDirectory + "\\Luconia");
-                Logger.LogInfo("Directory created");
-            }
-
-            if (!File.Exists(roamingDirectory + "\\Luconia\\type.txt"))
-            {
-                File.Create(roamingDirectory + "\\Luconia\\type.txt").Close();
-                File.WriteAllText(roamingDirectory + "\\Luconia\\type.txt", "normal\n// set to debug if you want to see the console");
-            }
-
-            if (File.ReadLines(roamingDirectory + "\\Luconia\\type.txt").First() == "debug")
-            {
-                AllocConsole();
-            }
-
             if (!Utils.CheckNet())
             {
                 Logger.LogError("No internet found!");

@@ -19,6 +19,26 @@ namespace Launcher
 
         public Installer() 
         {
+            if (!Directory.Exists(roamingDirectory + "\\Luconia"))
+            {
+                Logger.LogWarning("Can't find Luconia directory");
+                Logger.LogInfo("Creating Directory...");
+
+                Directory.CreateDirectory(roamingDirectory + "\\Luconia");
+                Logger.LogInfo("Directory created");
+            }
+
+            if (!File.Exists(roamingDirectory + "\\Luconia\\type.txt"))
+            {
+                File.Create(roamingDirectory + "\\Luconia\\type.txt").Close();
+                File.WriteAllText(roamingDirectory + "\\Luconia\\type.txt", "normal\n// set to debug if you want to see the console");
+            }
+
+            if (File.ReadLines(roamingDirectory + "\\Luconia\\type.txt").First() == "debug")
+            {
+                MainWindow.AllocConsole();
+            }
+
             Logger.LogInfo("Initializing Installer");
             InitVersion();
             InitDiscordRichPresence();
@@ -26,6 +46,8 @@ namespace Launcher
 
         private void InitDiscordRichPresence()
         {
+            if (!CheckNet()) return;
+
             DiscordRpcClient client = new DiscordRpcClient("1066805525540507728");
 
             client.OnReady += (sender, e) =>
@@ -58,21 +80,16 @@ namespace Launcher
         {
             var existsFile = File.Exists(roamingDirectory + "\\Luconia\\version.txt");
 
-            if (!Utils.CheckNet())
-            {
-                Logger.LogError("No internet found!");
-                MessageBox.Show("You need internet to use the launcher!", "An error has occured!", MessageBoxButton.OK, MessageBoxImage.Error);
-                Application.Current.MainWindow.Close();
-                return;
-            }
+            if (!CheckNet()) return;
 
             if (!existsFile) 
             {
                 Logger.LogWarning("Can't find version file");
                 Logger.LogInfo("Creating File...");
                 File.Create(roamingDirectory + "\\Luconia\\version.txt").Close();
+                File.WriteAllText(roamingDirectory + "\\Luconia\\version.txt", null);
                 Logger.LogInfo("File created");
-                File.WriteAllText(roamingDirectory + "\\Luconia\\version.txt", await new HttpClient().GetStringAsync("https://luconia.net/luconia/version.txt"));
+                if (Utils.CheckNet()) File.WriteAllText(roamingDirectory + "\\Luconia\\version.txt", await new HttpClient().GetStringAsync("https://luconia.net/luconia/version.txt"));
             }
 
             version = File.ReadLines(roamingDirectory + "\\Luconia\\version.txt").First();
@@ -112,13 +129,7 @@ namespace Launcher
         {
             MainWindow window = ((MainWindow)Application.Current.MainWindow);
 
-            if (!Utils.CheckNet())
-            {
-                Logger.LogError("No internet found!");
-                MessageBox.Show("You need internet to use the launcher!", "An error has occured!", MessageBoxButton.OK, MessageBoxImage.Error);
-                Application.Current.MainWindow.Close();
-                return;
-            }
+            if (!CheckNet()) return;
 
             var existsFile = File.Exists(roamingDirectory + "\\Luconia\\luconia.dll");
             var latestVersion = await new HttpClient().GetStringAsync("https://luconia.net/luconia/version.txt");
@@ -144,6 +155,18 @@ namespace Launcher
                     File.WriteAllText(roamingDirectory + "\\Luconia\\version.txt", latestVersion);
                 }
             }
+        }
+
+        private static bool CheckNet()
+        {
+            if (!Utils.CheckNet())
+            {
+                Logger.LogError("No internet found!");
+                MessageBox.Show("You need internet to use the launcher!", "An error has occured!", MessageBoxButton.OK, MessageBoxImage.Error);
+                Application.Current.MainWindow.Close();
+                return false;
+            }
+            return true;
         }
     }
 }
