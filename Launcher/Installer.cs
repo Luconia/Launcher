@@ -89,7 +89,7 @@ namespace Launcher
                 File.Create(roamingDirectory + "\\Luconia\\version.txt").Close();
                 File.WriteAllText(roamingDirectory + "\\Luconia\\version.txt", null);
                 Logger.LogInfo("File created");
-                if (Utils.CheckNet()) File.WriteAllText(roamingDirectory + "\\Luconia\\version.txt", await new HttpClient().GetStringAsync("https://luconia.net/luconia/version.txt"));
+                if (Utils.CheckNet()) File.WriteAllText(roamingDirectory + "\\Luconia\\version.txt", await new HttpClient().GetStringAsync("https://media.luconia.net/version.txt"));
             }
 
             version = File.ReadLines(roamingDirectory + "\\Luconia\\version.txt").First();
@@ -132,7 +132,7 @@ namespace Launcher
             if (!CheckNet()) return;
 
             var existsFile = File.Exists(roamingDirectory + "\\Luconia\\luconia.dll");
-            var latestVersion = await new HttpClient().GetStringAsync("https://luconia.net/luconia/version.txt");
+            var latestVersion = await new HttpClient().GetStringAsync("https://media.luconia.net/version.txt");
 
             if (!existsFile || version != latestVersion)
             {
@@ -147,7 +147,7 @@ namespace Launcher
                 {
                     wc.DownloadProgressChanged += DownloadProgressChanged;
                     wc.DownloadFileCompleted += DownloadFileCompleted;
-                    wc.DownloadFileAsync(new Uri($"https://luconia.net/luconia/{latestVersion}/luconia.dll"), roamingDirectory + "\\Luconia\\luconia.dll");
+                    wc.DownloadFileAsync(new Uri($"https://media.luconia.net/luconia/{latestVersion}/luconia.dll"), roamingDirectory + "\\Luconia\\luconia.dll");
 
                     window.launchButton.Content = "Downloading...";
                     window.launchButton.IsEnabled = false;
